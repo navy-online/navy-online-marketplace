@@ -68,8 +68,8 @@ const captainsSlice = createSlice({
       .addCase(fetchCaptains.fulfilled, (state, action) => {
         state.entities = action.payload.result;
         state.entitiesInfo = action.payload.info;
-        state.blockchainType =
-          "в ответе из ручки должно придти название блокчейна";
+        // state.blockchainType =
+        //   "в ответе из ручки должно придти название блокчейна";
         state.isLoading = false;
       })
       .addCase(fetchCaptains.rejected, (state, action) => {

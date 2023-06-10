@@ -40,6 +40,15 @@ const Islands = () => {
     isSale: false,
   });
 
+  const [selectedBlockchain, setSelectedBlockchain] = useState(
+    localStorageService.getBlockchainType() || "Venom"
+  ); // передаем в диспач запроса коллекции
+
+  const handleSelectedBlockchain = (value) => {
+    setSelectedBlockchain(value);
+    localStorageService.setBlockchainType(value);
+  };
+
   const handleChangeMarketState = (event) => {
     console.log("handle");
     setStateSwitch({
@@ -73,8 +82,9 @@ const Islands = () => {
 
   useEffect(() => {
     dispatch(setFilterAttributes({ marketplaceState, rarityList, priceOrder }));
-    dispatch(fetchIslands(currentPage));
+    dispatch(fetchIslands(selectedBlockchain, currentPage));
   }, [
+    selectedBlockchain,
     currentPage,
     marketplaceState,
     rarityList,
@@ -131,6 +141,7 @@ const Islands = () => {
       onMarketStateChange={handleChangeMarketState}
       priceOrder={priceOrder}
       onChangePrice={handleChangePrice}
+      onButtonSelectBlockchain={handleSelectedBlockchain}
     />
   ) : (
     <SkeletonCollectionPage />

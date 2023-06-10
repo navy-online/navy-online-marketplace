@@ -12,10 +12,11 @@ import {
 
 export const fetchShips = createAsyncThunk(
   "ships/fetchShips",
-  async (currentPage, { getState }) => {
+  async (selectedBlockchain, currentPage, { getState }) => {
     let content;
     const { ships } = getState();
     content = await shipsService.get(
+      selectedBlockchain,
       currentPage,
       config.pageSize,
       ships.attributesFilters.marketplaceState,
