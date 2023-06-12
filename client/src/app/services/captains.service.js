@@ -1,21 +1,10 @@
 import httpService from "./http.service";
 import localStorageService from "./localStorage.service";
 
-const captainsEndpoint =
-  "collection/0xcefd45799326f48a4d23222bb8fa15b49baf28ec/items";
-
 const captainsService = {
-  get: async (
-    selectedBlockchain,
-    page,
-    size,
-    marketplaceState,
-    rarity,
-    priceOrder
-  ) => {
+  get: async (page, size, marketplaceState, rarity, priceOrder) => {
     const requestParams = {
       params: {
-        selectedBlockchain,
         page,
         size,
         marketplaceState,
@@ -31,6 +20,11 @@ const captainsService = {
         Authorization: `Bearer ${localStorageService.getAccessToken()}`,
       };
     }
+    const captainsEndpoint =
+      localStorageService.getBlockchainType() === "cronos"
+        ? "collection/cronos/0x2f79860e2a2829af3c135880da1e8fc3fd9ae398/items"
+        : "collection/venom/0:dbcdf5d43044c8039fc34fcf8e695f10774ef942b10f93bd9c78513761c518de/items";
+
     const { data } = await httpService.get(captainsEndpoint, requestParams);
     return data;
   },

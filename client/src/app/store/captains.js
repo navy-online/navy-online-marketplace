@@ -10,23 +10,22 @@ import localStorageService from "../services/localStorage.service";
 
 export const fetchCaptains = createAsyncThunk(
   "captains/fetchCaptains",
-  async (selectedBlockchain, currentPage, { getState }) => {
+  async (currentPage, { getState }) => {
     let content;
-    const { captains } = getState();
+    const { Captains } = getState();
     content = await captainsService.get(
-      selectedBlockchain,
       currentPage,
       config.pageSize,
-      captains.attributesFilters.marketplaceState,
-      captains.attributesFilters.rarity,
-      captains.attributesFilters.priceOrder
+      Captains.attributesFilters.marketplaceState,
+      Captains.attributesFilters.rarity,
+      Captains.attributesFilters.priceOrder
     );
     return content;
   }
 );
 
 const captainsSlice = createSlice({
-  name: "captains",
+  name: "Captains",
   initialState: {
     entities: [],
     entitiesInfo: null,
@@ -133,10 +132,10 @@ export const removeFilterAttributes = () => (dispatch) => {
 //   localStorageService.setBlockchainType(payload); // приходит строка?
 // };
 
-export const getCaptains = () => (state) => state.captains.entities;
-export const getCaptainsInfo = () => (state) => state.captains.entitiesInfo;
+export const getCaptains = () => (state) => state.Captains.entities;
+export const getCaptainsInfo = () => (state) => state.Captains.entitiesInfo;
 
 export const getCaptainsLoadingStatus = () => (state) =>
-  state.captains.isLoading;
+  state.Captains.isLoading;
 
 export default captainsReducer;

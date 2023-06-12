@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import CollectionPage from "../components/pages/Collection/CollectionPage";
-import SkeletonCollectionPage from "../components/ui/skeleton/SkeletonCollectionPage";
+import Box from "@mui/material/Box";
+
+import CollectionItems from "../components/pages/Collection/CollectionItems";
+import SkeletonCollectionItems from "../components/ui/skeleton/SkeletonCollectionItems";
 import {
   fetchCaptains,
   getCaptains,
   getCaptainsInfo,
   getCaptainsLoadingStatus,
   removeFilterAttributes,
-  setBlockchainType,
   setFilterAttributes,
 } from "../store/captains";
 import { loadFavouritesList } from "../store/favourites";
 import { getIsLogIn } from "../store/user";
 import localStorageService from "../services/localStorage.service";
+import ChooseBlockchain from "../components/pages/Collection/ChooseBlockchain";
+import FilterGroup from "../components/pages/Collection/FilterGroup";
+import BoxContainer from "../components/common/BoxContainer";
 
 const Captains = () => {
   const location = useLocation();
@@ -42,12 +46,13 @@ const Captains = () => {
   });
 
   const [selectedBlockchain, setSelectedBlockchain] = useState(
-    localStorageService.getBlockchainType() || "Venom"
-  ); // передаем в диспач запроса коллекции
+    localStorageService.getBlockchainType() || "venom"
+  );
 
   const handleSelectedBlockchain = (value) => {
     setSelectedBlockchain(value);
     localStorageService.setBlockchainType(value);
+    dispatch(fetchCaptains(currentPage));
   };
 
   const handleChangeMarketState = (event) => {
@@ -59,7 +64,7 @@ const Captains = () => {
 
   useEffect(() => {
     if (stateSwitch.isSale === true) {
-      setMarketplaceState("listed");
+      setMarketplaceState("Listed");
     } else {
       setMarketplaceState("");
     }
@@ -88,10 +93,8 @@ const Captains = () => {
         priceOrder,
       })
     );
-    // dispatch(setBlockchainType(selectedBlockchain));
-    dispatch(fetchCaptains(selectedBlockchain, currentPage));
+    dispatch(fetchCaptains(currentPage));
   }, [
-    selectedBlockchain,
     currentPage,
     marketplaceState,
     rarityList,
@@ -101,7 +104,11 @@ const Captains = () => {
   ]);
 
   useEffect(() => {
-    if (!isLoading && collectionCaptainsInfo.pages < currentPage) {
+    if (
+      !isLoading &&
+      collectionCaptainsData.length > 0 &&
+      collectionCaptainsInfo.pages < currentPage
+    ) {
       setCurrentPage(1);
       navigate(location.pathname);
     }
@@ -130,27 +137,56 @@ const Captains = () => {
     });
   };
 
-  return !isLoading ? (
-    <CollectionPage
-      collection={collectionCaptainsData}
-      isLoading={isLoading}
-      currentPage={currentPage}
-      count={collectionCaptainsInfo.count}
-      pages={collectionCaptainsInfo.pages}
-      pathName={location.pathname}
-      onPageChange={handlePageChange}
-      filterNames={filterNames}
-      rarityList={rarityList}
-      onFilterChange={handleChangeFilter}
-      onHandleClear={handleClear}
-      stateSwitch={stateSwitch}
-      onMarketStateChange={handleChangeMarketState}
-      priceOrder={priceOrder}
-      onChangePrice={handleChangePrice}
-      onButtonSelectBlockchain={handleSelectedBlockchain}
-    />
-  ) : (
-    <SkeletonCollectionPage />
+  return (
+    <>
+      <BoxContainer>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: "42px",
+          }}
+        >
+          <Box>
+            <ChooseBlockchain
+              selectedBlockchain={selectedBlockchain}
+              onButtonSelectBlockchain={handleSelectedBlockchain}
+            />
+          </Box>
+          <Box>
+            <FilterGroup
+              filterNames={filterNames}
+              rarityList={rarityList}
+              onFilterChange={handleChangeFilter}
+              onHandleClear={handleClear}
+              stateSwitch={stateSwitch}
+              onMarketStateChange={handleChangeMarketState}
+              onChangePrice={handleChangePrice}
+              priceOrder={priceOrder}
+            />
+          </Box>
+        </Box>
+        {!isLoading && collectionCaptainsData.length <= 0 && (
+          <Box sx={{ m: "24px" }}>There are no NFTs with these parameters</Box>
+        )}
+        <Box sx={{ mt: "42px" }}>
+          {!isLoading ? (
+            <CollectionItems
+              collection={collectionCaptainsData}
+              isLoading={isLoading}
+              currentPage={currentPage}
+              count={collectionCaptainsInfo.count}
+              pages={collectionCaptainsInfo.pages}
+              pathName={location.pathname}
+              onPageChange={handlePageChange}
+            />
+          ) : (
+            <SkeletonCollectionItems />
+          )}
+        </Box>
+      </BoxContainer>
+    </>
   );
 };
 

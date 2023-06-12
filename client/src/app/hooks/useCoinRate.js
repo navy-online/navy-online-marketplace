@@ -17,6 +17,7 @@ export const CoinRateProvider = ({ children }) => {
   const getCoinRate = async () => {
     try {
       const data = await coinUsdRateService.get();
+      console.log(data);
       setVenomUsdPrice(data.venomUsdPrice);
       setCronosUsdPrice(data.cronosUsdPrice);
       setLoading(false);

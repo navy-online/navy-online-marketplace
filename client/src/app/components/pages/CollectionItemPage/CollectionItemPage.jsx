@@ -150,7 +150,7 @@ const CollectionItemPage = () => {
                         gap: "4px",
                       }}
                     >
-                      {nftItemData.coinSymbol === "CRO" && cronosIcon}{" "}
+                      {nftItemData.tokenSymbol === "CRO" && cronosIcon}{" "}
                       {nftItemData.price} /{" "}
                       <NftPriceUsd price={nftItemData.price} />
                     </Typography>

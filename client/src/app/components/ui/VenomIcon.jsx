@@ -1,4 +1,4 @@
-import venomTokenIcon from "../../assets/icons/venom-icon.svg";
+import venomTokenIcon from "../../assets/icons/venom37.png";
 
 export const venomIcon = (
   <div className="cronos-icon">

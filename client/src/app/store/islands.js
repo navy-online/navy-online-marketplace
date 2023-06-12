@@ -10,24 +10,23 @@ import {
 } from "./favourites";
 
 export const fetchIslands = createAsyncThunk(
-  "islands/fetchIslands",
-  async (selectedBlockchain, currentPage, { getState }) => {
+  "Islands/fetchIslands",
+  async (currentPage, { getState }) => {
     let content;
-    const { islands } = getState();
+    const { Islands } = getState();
     content = await islandsService.get(
-      selectedBlockchain,
       currentPage,
       config.pageSize,
-      islands.attributesFilters.marketplaceState,
-      islands.attributesFilters.rarity,
-      islands.attributesFilters.priceOrder
+      Islands.attributesFilters.marketplaceState,
+      Islands.attributesFilters.rarity,
+      Islands.attributesFilters.priceOrder
     );
     return content;
   }
 );
 
 const islandsSlice = createSlice({
-  name: "islands",
+  name: "Islands",
   initialState: {
     entities: [],
     entitiesInfo: null,
@@ -129,9 +128,9 @@ export const removeFilterAttributes = () => (dispatch) => {
   dispatch(clearFilterAttributes());
 };
 
-export const getIslands = () => (state) => state.islands.entities;
-export const getIslandsInfo = () => (state) => state.islands.entitiesInfo;
+export const getIslands = () => (state) => state.Islands.entities;
+export const getIslandsInfo = () => (state) => state.Islands.entitiesInfo;
 
-export const getIslandsLoadingStatus = () => (state) => state.islands.isLoading;
+export const getIslandsLoadingStatus = () => (state) => state.Islands.isLoading;
 
 export default islandsReducer;

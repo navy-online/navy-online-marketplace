@@ -11,24 +11,23 @@ import {
 } from "./favourites";
 
 export const fetchShips = createAsyncThunk(
-  "ships/fetchShips",
-  async (selectedBlockchain, currentPage, { getState }) => {
+  "Ships/fetchShips",
+  async (currentPage, { getState }) => {
     let content;
-    const { ships } = getState();
+    const { Ships } = getState();
     content = await shipsService.get(
-      selectedBlockchain,
       currentPage,
       config.pageSize,
-      ships.attributesFilters.marketplaceState,
-      ships.attributesFilters.rarity,
-      ships.attributesFilters.priceOrder
+      Ships.attributesFilters.marketplaceState,
+      Ships.attributesFilters.rarity,
+      Ships.attributesFilters.priceOrder
     );
     return content;
   }
 );
 
 const shipsSlice = createSlice({
-  name: "ships",
+  name: "Ships",
   initialState: {
     entities: [],
     entitiesInfo: null,
@@ -130,9 +129,9 @@ export const removeFilterAttributes = () => (dispatch) => {
   dispatch(clearFilterAttributes());
 };
 
-export const getShips = () => (state) => state.ships.entities;
-export const getShipsInfo = () => (state) => state.ships.entitiesInfo;
+export const getShips = () => (state) => state.Ships.entities;
+export const getShipsInfo = () => (state) => state.Ships.entitiesInfo;
 
-export const getShipsLoadingStatus = () => (state) => state.ships.isLoading;
+export const getShipsLoadingStatus = () => (state) => state.Ships.isLoading;
 
 export default shipsReducer;
