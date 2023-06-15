@@ -96,7 +96,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
   };
 
   const handleClick = () => {
-    navigate(`/${contractAddress}/${tokenId}`);
+    navigate(`${chainName.toLowerCase()}/${contractAddress}/${tokenId}`);
   };
 
   return !isLoadingCollection ? (
