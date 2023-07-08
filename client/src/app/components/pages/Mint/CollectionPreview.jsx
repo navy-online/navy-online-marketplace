@@ -103,7 +103,10 @@ const СollectionPreview = ({ data }) => {
                 ? cronosIcon
                 : venomIcon}{" "}
               {data.mintingDetails.mintPriceNativeCoin} /{" "}
-              <NftPriceUsd price={data.mintingDetails.mintPriceNativeCoin} />
+              <NftPriceUsd
+                price={data.mintingDetails.mintPriceNativeCoin}
+                chainName={data.mintingDetails.chainName}
+              />
             </Box>
           </Box>
         </CardActions>

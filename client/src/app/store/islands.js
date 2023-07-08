@@ -116,7 +116,6 @@ const { reducer: islandsReducer, actions } = islandsSlice;
 const { addFilterAttributes, clearFilterAttributes } = actions;
 
 export const setFilterAttributes = (payload) => (dispatch) => {
-  console.log(payload);
   localStorageService.setFilterMarketState(payload.marketplaceState);
   localStorageService.setCollectionFilterRarity(payload.rarityList);
   localStorageService.setFilterPriceOrder(payload.priceOrder);
